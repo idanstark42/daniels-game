@@ -19,7 +19,7 @@ const smallButtonsLevel = count => ({
   </div>
 })
 
-const movingButtonLevel = (count, speed = 0.075) => {
+const movingButtonLevel = (count, speed = 0.05) => {
 
   const randomVector = magnitude => {
     const angle = 2 * Math.PI * Math.random()
