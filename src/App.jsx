@@ -178,7 +178,7 @@ const LEVELS = [{},
   //     <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 50 }}>סיימת!</div>
   //   </div>,
   // }
-  threeDigitsLevel(223),
+  threeDigitsLevel(243),
 ]
 
 function App() {
