@@ -110,63 +110,75 @@ const textLevel = text => ({
   content: (state) => <div style={{ fontSize: '10rem' }}>{text.split('').map((letter, i) => <span style={{ color: i < state.written ? 'inherit': 'white' }}>{letter}</span>)}</div>
 })
 
+const threeDigitsLevel = (digits = 523) => ({
+  instructions: '',
+  initialState: { digits, input: '000' },
+  content: (state, setState, nextLevel) => <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'center' }}>
+    <input type='number' value={state.input[0]} style={{ width: 50, height: 50, fontSize: 30 }} onChange={e => setState({ ...state, input: e.target.value + state.input.slice(1) })} />
+    <input type='number' value={state.input[1]} style={{ width: 50, height: 50, fontSize: 30 }} onChange={e => setState({ ...state, input: state.input[0] + e.target.value + state.input[2] })} />
+    <input type='number' value={state.input[2]} style={{ width: 50, height: 50, fontSize: 30 }} onChange={e => setState({ ...state, input: state.input.slice(0, 2) + e.target.value })} />
+    <button onClick={() => state.input === state.digits.toString() ? nextLevel() : alert('נסי שוב')} style={{ background: 'rgb(228, 59, 161)', padding: '1rem', fontSize: '1.2rem' }}>אישור</button>
+  </div>
+})
+
 const LEVELS = [{},
-  {
-    instructions: 'לחצי על הכפתור הורוד',
-    initialState: {},
-    content: (_state, _setState, nextLevel) => <button onClick={nextLevel} style={{ background: 'rgb(228, 59, 161)', width: 300, height: 300 }}></button>
-  }, {
-    instructions: 'לחצי על הכפתור הורוד',
-    initialState: {},
-    content: (_state, _setState, nextLevel) => <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'center' }}>
-      <button onClick={nextLevel} style={{ background: 'rgb(228, 59, 161)', width: 300, height: 300 }}></button>
-      <button style={{ background: 'rgb(59, 208, 228)', width: 300, height: 300 }}></button>
-    </div>
-  },
-  smallButtonsLevel(2),
-  smallButtonsLevel(2),
-  smallButtonsLevel(6),
-  smallButtonsLevel(6),
-  smallButtonsLevel(10),
-  smallButtonsLevel(20),
-  smallButtonsLevel(30),
-  messageLevel('עד עכשיו היה קל? אז בואי ננסה קשה יותר'),
-  movingButtonLevel(2),
-  movingButtonLevel(30),
-  messageLevel('עכשיו ננסה משהו אחר...'),
-  letterLevel('א'),
-  letterLevel('ב'),
-  letterLevel('ג'),
-  letterLevel('ד'),
-  letterLevel('ה'),
-  letterLevel('ו'),
-  letterLevel('ז'),
-  letterLevel('ח'),
-  letterLevel('ט'),
-  letterLevel('י'),
-  letterLevel('כ'),
-  letterLevel('ל'),
-  letterLevel('מ'),
-  letterLevel('נ'),
-  letterLevel('ס'),
-  letterLevel('ע'),
-  letterLevel('פ'),
-  letterLevel('צ'),
-  letterLevel('ק'),
-  letterLevel('ר'),
-  letterLevel('ש'),
-  letterLevel('ת'),
-  textLevel('דניאל'),
-  textLevel('שלום מחשב'),
-  textLevel('אני כותבת'),
-  textLevel('קוראים לי דניאל ואני כותבת במחשב'),
-  {
-    instructions: '',
-    initialState: {},
-    content: (_state, _setState, nextLevel) => <div style={{ width: '100%', height: '80vh', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 50 }}>סיימת!</div>
-    </div>,
-  }
+  // {
+  //   instructions: 'לחצי על הכפתור הורוד',
+  //   initialState: {},
+  //   content: (_state, _setState, nextLevel) => <button onClick={nextLevel} style={{ background: 'rgb(228, 59, 161)', width: 300, height: 300 }}></button>
+  // }, {
+  //   instructions: 'לחצי על הכפתור הורוד',
+  //   initialState: {},
+  //   content: (_state, _setState, nextLevel) => <div style={{ display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'center' }}>
+  //     <button onClick={nextLevel} style={{ background: 'rgb(228, 59, 161)', width: 300, height: 300 }}></button>
+  //     <button style={{ background: 'rgb(59, 208, 228)', width: 300, height: 300 }}></button>
+  //   </div>
+  // },
+  // smallButtonsLevel(2),
+  // smallButtonsLevel(2),
+  // smallButtonsLevel(6),
+  // smallButtonsLevel(6),
+  // smallButtonsLevel(10),
+  // smallButtonsLevel(20),
+  // smallButtonsLevel(30),
+  // messageLevel('עד עכשיו היה קל? אז בואי ננסה קשה יותר'),
+  // movingButtonLevel(2),
+  // movingButtonLevel(30),
+  // messageLevel('עכשיו ננסה משהו אחר...'),
+  // letterLevel('א'),
+  // letterLevel('ב'),
+  // letterLevel('ג'),
+  // letterLevel('ד'),
+  // letterLevel('ה'),
+  // letterLevel('ו'),
+  // letterLevel('ז'),
+  // letterLevel('ח'),
+  // letterLevel('ט'),
+  // letterLevel('י'),
+  // letterLevel('כ'),
+  // letterLevel('ל'),
+  // letterLevel('מ'),
+  // letterLevel('נ'),
+  // letterLevel('ס'),
+  // letterLevel('ע'),
+  // letterLevel('פ'),
+  // letterLevel('צ'),
+  // letterLevel('ק'),
+  // letterLevel('ר'),
+  // letterLevel('ש'),
+  // letterLevel('ת'),
+  // textLevel('דניאל'),
+  // textLevel('שלום מחשב'),
+  // textLevel('אני כותבת'),
+  // textLevel('קוראים לי דניאל ואני כותבת במחשב'),
+  // {
+  //   instructions: '',
+  //   initialState: {},
+  //   content: (_state, _setState, nextLevel) => <div style={{ width: '100%', height: '80vh', position: 'relative' }}>
+  //     <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 50 }}>סיימת!</div>
+  //   </div>,
+  // }
+  threeDigitsLevel(223),
 ]
 
 function App() {
@@ -182,7 +194,7 @@ function App() {
   }, [level])
 
   return <>
-    <div className='title'>שלב {level}</div>
+    {/* <div className='title'>שלב {level}</div> */}
     <div className='instructions'>{LEVELS[level].instructions}</div>
     <div className='content'>{LEVELS[level].content(state, setState, nextLevel)}</div>
   </>
