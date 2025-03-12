@@ -12,7 +12,7 @@ import FireWizardAttack2 from '../assets/players/fire-wizard/Attack_2.png'
 import FireWizrdFireball from '../assets/players/fire-wizard/Fireball.png'
 import FireWizardFlameJet from '../assets/players/fire-wizard/Flame_jet.png'
 
-const ANIMATION_SPEED = 10
+const ANIMATION_SPEED = 0.1
 
 class PlayerAnimator {
   constructor (animations) {
@@ -35,28 +35,35 @@ class PlayerAnimator {
       animation = this.animations.idle
     }
 
-    ctx.fillRect((position.x - tileSize / 2) * zoom, (position.y - tileSize / 2) * zoom, player.size.width * tileSize * zoom, player.size.height * tileSize * zoom)
     if (animation.flipped) {
       ctx.scale(-1, 1)
       position.x = -position.x
     }
-    ctx.drawImage(animation.image, Math.floor(this.frame)*animation.frameSize + animation.offset.x, animation.offset.y, animation.frameSize * zoom, player.size.height*tileSize, (position.x - tileSize / 2) * zoom, (position.y - tileSize / 2) * zoom, animation.frameSize * zoom, player.size.height * tileSize * zoom)
+    ctx.drawImage(animation.image, Math.floor((animation.start || 0) + this.frame)*animation.frameSize + animation.offset.x, animation.offset.y, animation.frameSize * zoom, player.size.height*tileSize, (position.x - tileSize / 2) * zoom, (position.y - tileSize / 2) * zoom, animation.frameSize * zoom, player.size.height * tileSize * zoom)
     if (animation.flipped) {
       ctx.scale(-1, 1)
       position.x = -position.x
     }
-    this.frame = (this.frame + (1 / animation.speed)) % (animation.image.width / animation.frameSize)
+    this.frame = (this.frame + animation.speed) % (animation.frames || (animation.image.width / animation.frameSize))
   }
 }
 
 const FIRE_WIZARD = new PlayerAnimator({
-  idle: { src: FireWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  'idle right': { src: FireWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  'idle left': { src: FireWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 }, flipped: true },
   'walking right': { src: FireWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 } },
   'walking left': { src: FireWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 }, flipped: true },
   'running right': { src: FireWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
   'running left': { src: FireWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 }, flipped: true },
-  'jumping right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
-  'jumping left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 }, flipped: true },
+  
+  'start jumping right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4 },
+  'start jumping left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4, flipped: true },
+  'jumping right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4 },
+  'jumping left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4, flipped: true },
+  'falling right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5 },
+  'falling left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5, flipped: true },
+  'landing right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6 },
+  'landing left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6, flipped: true },
 
   hurting: { src: FireWizardHurt, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
   dead: { src: FireWizardDeath, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
