@@ -20,4 +20,9 @@ export default class FightingCharacter extends Character {
   setArmor(armorValue) {
     this.armor = armorValue
   }
+
+  state () {
+    if (this.hp <= 0) return 'dead'
+    return super.state()
+  }
 }

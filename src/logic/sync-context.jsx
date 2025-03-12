@@ -13,7 +13,6 @@ export const SyncedContextProvider = ({ children }) => {
   const [conn, setConn] = useState(null)
   const [peerId, setPeerId] = useState(null)
   const [gameState, setGameState] = useState({}) // Shared game state
-  const isHost = useRef(false)
 
   useEffect(() => {
     // Initialize PeerJS
@@ -28,7 +27,6 @@ export const SyncedContextProvider = ({ children }) => {
     // Handle incoming connections
     newPeer.on('connection', (connection) => {
       console.log('Incoming connection:', connection)
-      isHost.current = true // First connected player is host
       setupConnection(connection)
     })
 
@@ -36,6 +34,7 @@ export const SyncedContextProvider = ({ children }) => {
   }, [])
 
   const setupConnection = (connection) => {
+    console.log(connection)
     setConn(connection)
 
     connection.on('data', (data) => {
@@ -64,7 +63,7 @@ export const SyncedContextProvider = ({ children }) => {
   }
 
   return (
-    <WebSocketContext.Provider value={{ peerId, connectToPeer, gameState, sendUpdate, isHost: isHost.current }}>
+    <WebSocketContext.Provider value={{ peerId, connectToPeer, gameState, sendUpdate, connected: Boolean(conn) }}>
       {children}
     </WebSocketContext.Provider>
   )

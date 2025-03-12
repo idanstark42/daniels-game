@@ -3,11 +3,14 @@ import { GameLogic } from '../logic/game'
 import { useSyncedContext } from '../logic/sync-context'
 
 import Vector from '../logic/vector'
+import TILES from './tiles'
+import PLAYERS from './players'
 
 export function GameView () {
   const { peerId, gameState, sendUpdate } = useSyncedContext()
   const canvasRef = useRef(null)
   const [gameLogic, setGameLogic] = useState(null)
+  const [zoom, setZoom] = useState(1)
 
   useEffect(() => {
     if (peerId) {
@@ -40,9 +43,9 @@ export function GameView () {
       map.grid.forEach((row, cellY) => {
         row.forEach((cell, cellX) => {
           const position = new Vector(cellX * map.tileSize, cellY * map.tileSize).subtract(playerPosition).add(referencePoint)
-          if (cell === 1) {
+          if (cell !== -1) {
             ctx.fillStyle = 'gray'
-            ctx.fillRect(position.x - map.tileSize / 2, position.y - map.tileSize / 2, map.tileSize, map.tileSize)
+            ctx.drawImage(TILES[cell], (position.x - map.tileSize / 2) * zoom, (position.y - map.tileSize / 2) * zoom, map.tileSize * zoom, map.tileSize * zoom)
           }
         })
       })
@@ -57,14 +60,8 @@ export function GameView () {
 
     const drawPlayers = (ctx, players, playerPosition) => {
       Object.values(players).forEach(player => {
-        ctx.fillStyle = 'blue'
         const position = Vector.copy(player.position).subtract(playerPosition).add(referencePoint)
-        ctx.fillRect(
-          position.x - player.size.width * gameLogic.state.level.map.tileSize / 2,
-          position.y - player.size.height * gameLogic.state.level.map.tileSize / 2,
-          player.size.width * gameLogic.state.level.map.tileSize,
-          player.size.height * gameLogic.state.level.map.tileSize
-        )
+        PLAYERS.FIRE_WIZARD.draw(ctx, player, position, gameLogic.state.level.map.tileSize, zoom)
       })
     }
 

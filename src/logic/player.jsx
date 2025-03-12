@@ -1,9 +1,9 @@
 import FightingCharacter from './fighting-character'
 
 export default class Player extends FightingCharacter {
-  constructor(x, y, width, height, speedValue, maxHP, hp, armor, magicBook, maxMana, mana, manaRegenRate) {
+  constructor(x, y, width, height, speedValue, maxHP, hp, armor, spellbook, maxMana, mana, manaRegenRate) {
     super(x, y, width, height, speedValue, maxHP, hp, armor)
-    this.magicBook = magicBook
+    this.spellbook = spellbook
     this.mana = mana
     this.manaRegenRate = manaRegenRate
     this.maxMana = maxMana
@@ -11,7 +11,7 @@ export default class Player extends FightingCharacter {
 
   // Cast a spell by typing the corresponding key
   castSpell(spellName) {
-    const spell = this.magicBook.get(spellName)
+    const spell = this.spellbook.get(spellName)
     if (!spell) {
       throw new Error('Spell not found')
     }
@@ -20,7 +20,7 @@ export default class Player extends FightingCharacter {
     }
 
     spell.cast()
-    this.mana -= this.magicBook.getManaCost(spellName) // Deduct mana
+    this.mana -= this.spellbook.getManaCost(spellName) // Deduct mana
   }
 
   // Regenerate mana

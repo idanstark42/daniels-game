@@ -39,6 +39,13 @@ export default class Character {
       this.position.y = newPosition.y
     }
   }
+
+  state () {
+    if (Math.abs(this.speed.y) > 1) return 'jumping'
+    if (this.speed.x > 0) return 'running right'
+    if (this.speed.x < 0) return 'running left'
+    return 'idle'
+  }
 }
 
 const DEFAULT_GRAVITY = 0.1

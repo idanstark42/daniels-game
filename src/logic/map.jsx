@@ -12,7 +12,7 @@ export default class Map {
 
     for (let i = startX; i <= endX; i++) {
       for (let j = startY; j <= endY; j++) {
-        if (this.grid[j] && this.grid[j][i] === 1) {
+        if (this.grid[j] && this.grid[j][i] !== -1) {
           return true
         }
       }

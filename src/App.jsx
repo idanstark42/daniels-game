@@ -6,13 +6,13 @@ import Home from './pages/home'
 import Game from './pages/game'
 
 function App() {
-  const { peerId } = useSyncedContext()
+  const { connected } = useSyncedContext()
 
-  if (!peerId) {
-    return <Home />
-  } else {
+  // if (connected) {
     return <Game />
-  }
+  // } else {
+  //   return <Home />
+  // }
 }
 
 export default App

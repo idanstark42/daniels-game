@@ -12,7 +12,7 @@ export class GameLogic {
       this.set({ players: {} })
     }
     if (!this.state.players[peerId]) {
-      this.set({ players: { ...(initialState.players || {}), [peerId]: new Player(100, 0, 1, 1, 5) } })
+      this.set({ players: { ...(initialState.players || {}), [peerId]: new Player(100, 0, 1, 2.2, 5) } })
     }
     if (!this.state.level) {
       this.set({ level: LEVELS[0] })
