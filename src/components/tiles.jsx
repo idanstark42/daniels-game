@@ -1,3 +1,5 @@
+import canvasImage from './canvas-image'
+
 import WALL from '../assets/tiles/wall.png'
 
 import TOP from '../assets/tiles/top.png'
@@ -42,14 +44,6 @@ const TILES = [
 
     NOT_BOTTOM, // 14
     NOT_TOP, // 15
-].map((src, index) => {
-    if (!src) return null
-    const img = new Image()
-    img.src = src
-    img.onload = () => {
-        console.log('Loaded tile', index)
-    }
-    return img
-})
+].map(src => canvasImage(src))
 
 export default TILES

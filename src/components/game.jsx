@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
+
+import BACKGROUND from '../assets/background.png'
+
 import { GameLogic } from '../logic/game'
 import { useSyncedContext } from '../logic/sync-context'
 
 import Vector from '../logic/vector'
+import canvasImage from './canvas-image'
 import TILES from './tiles'
 import PLAYERS from './players'
 
@@ -39,6 +43,10 @@ export function GameView () {
     const ctx = canvas.getContext('2d')
     const referencePoint = new Vector(canvas.width / 2, canvas.height * 0.8)
 
+    const drawBackground = (ctx) => {
+      ctx.drawImage(canvasImage(BACKGROUND), 0, 0, canvas.width, canvas.height)
+    }
+
     const drawMap = (ctx, map, playerPosition) => {
       map.grid.forEach((row, cellY) => {
         row.forEach((cell, cellX) => {
@@ -71,6 +79,7 @@ export function GameView () {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+      drawBackground(ctx)
       drawMap(ctx, gameLogic.state.level.map, gameLogic.currentPlayer.position)
       drawMonsters(ctx, gameLogic.state.level.monsters, gameLogic.currentPlayer.position)
       drawPlayers(ctx, gameLogic.state.players, gameLogic.currentPlayer.position)
@@ -79,7 +88,11 @@ export function GameView () {
     }
 
     render()
+
+    return () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+    }
   }, [gameLogic])
 
-  return <canvas ref={canvasRef} width={600} height={400} style={{ border: '1px solid black' }} />
+  return <canvas ref={canvasRef} width={900} height={600} style={{ border: '1px solid black' }} />
 }

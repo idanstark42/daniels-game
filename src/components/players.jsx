@@ -1,3 +1,5 @@
+import canvasImage from './canvas-image'
+
 import FireWizardIdle from '../assets/players/fire-wizard/Idle.png'
 import FireWizardWalk from '../assets/players/fire-wizard/Walk.png'
 import FireWizardRun from '../assets/players/fire-wizard/Run.png'
@@ -9,20 +11,44 @@ import FireWizardDeath from '../assets/players/fire-wizard/Dead.png'
 
 import FireWizardAttack1 from '../assets/players/fire-wizard/Attack_1.png'
 import FireWizardAttack2 from '../assets/players/fire-wizard/Attack_2.png'
-import FireWizrdFireball from '../assets/players/fire-wizard/Fireball.png'
-import FireWizardFlameJet from '../assets/players/fire-wizard/Flame_jet.png'
+import FireWizardMagicBall from '../assets/players/fire-wizard/Fireball.png'
+import FireWizardMagicJet from '../assets/players/fire-wizard/Flame_jet.png'
+
+import LightningWizardIdle from '../assets/players/lightning-wizard/Idle.png'
+import LightningWizardWalk from '../assets/players/lightning-wizard/Walk.png'
+import LightningWizardRun from '../assets/players/lightning-wizard/Run.png'
+import LightningWizardJump from '../assets/players/lightning-wizard/Jump.png'
+
+import LightningWizardCharge from '../assets/players/lightning-wizard/Charge.png'
+import LightningWizardHurt from '../assets/players/lightning-wizard/Hurt.png'
+import LightningWizardDeath from '../assets/players/lightning-wizard/Dead.png'
+
+import LightningWizardAttack1 from '../assets/players/lightning-wizard/Attack_1.png'
+import LightningWizardAttack2 from '../assets/players/lightning-wizard/Attack_2.png'
+import LightningWizardMagicBall from '../assets/players/lightning-wizard/Light_ball.png'
+import LightningWizardMagicJet from '../assets/players/lightning-wizard/Light_charge.png'
+
+import WandarerWizardIdle from '../assets/players/wandarer-wizard/Idle.png'
+import WandarerWizardWalk from '../assets/players/wandarer-wizard/Walk.png'
+import WandarerWizardRun from '../assets/players/wandarer-wizard/Run.png'
+import WandarerWizardJump from '../assets/players/wandarer-wizard/Jump.png'
+
+import WandarerWizardCharge1 from '../assets/players/wandarer-wizard/Charge_1.png'
+import WandarerWizardCharge2 from '../assets/players/wandarer-wizard/Charge_2.png'
+import WandarerWizardHurt from '../assets/players/wandarer-wizard/Hurt.png'
+import WandarerWizardDeath from '../assets/players/wandarer-wizard/Dead.png'
+
+import WandarerWizardAttack1 from '../assets/players/wandarer-wizard/Attack_1.png'
+import WandarerWizardAttack2 from '../assets/players/wandarer-wizard/Attack_2.png'
+import WandarerWizardMagicBall from '../assets/players/wandarer-wizard/Magic_sphere.png'
+import WandarerWizardMagicJet from '../assets/players/wandarer-wizard/Magic_arrow.png'
 
 const ANIMATION_SPEED = 0.1
 
 class PlayerAnimator {
   constructor (animations) {
     this.animations = Object.keys(animations).reduce((acc, key) => {
-      const img = new Image()
-      img.src = animations[key].src
-      img.onload = () => {
-        console.log('Loaded animation', key)
-      }
-      acc[key] = { image: img, ...animations[key] }
+      acc[key] = { image: canvasImage(animations[key].src), ...animations[key] }
       return acc
     }, {})
     this.frame = 0
@@ -35,12 +61,12 @@ class PlayerAnimator {
       animation = this.animations.idle
     }
 
-    if (animation.flipped) {
+    if (player.facing === 'left') {
       ctx.scale(-1, 1)
       position.x = -position.x
     }
     ctx.drawImage(animation.image, Math.floor((animation.start || 0) + this.frame)*animation.frameSize + animation.offset.x, animation.offset.y, animation.frameSize * zoom, player.size.height*tileSize, (position.x - tileSize / 2) * zoom, (position.y - tileSize / 2) * zoom, animation.frameSize * zoom, player.size.height * tileSize * zoom)
-    if (animation.flipped) {
+    if (player.facing === 'left') {
       ctx.scale(-1, 1)
       position.x = -position.x
     }
@@ -49,21 +75,14 @@ class PlayerAnimator {
 }
 
 const FIRE_WIZARD = new PlayerAnimator({
-  'idle right': { src: FireWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
-  'idle left': { src: FireWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 }, flipped: true },
-  'walking right': { src: FireWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 } },
-  'walking left': { src: FireWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 }, flipped: true },
-  'running right': { src: FireWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
-  'running left': { src: FireWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 }, flipped: true },
+  idle: { src: FireWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  walking: { src: FireWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 } },
+  running: { src: FireWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
   
-  'start jumping right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4 },
-  'start jumping left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4, flipped: true },
-  'jumping right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4 },
-  'jumping left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4, flipped: true },
-  'falling right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5 },
-  'falling left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5, flipped: true },
-  'landing right': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6 },
-  'landing left': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6, flipped: true },
+  'start jumping': { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4 },
+  jumping: { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4 },
+  falling: { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5 },
+  landing: { src: FireWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6 },
 
   hurting: { src: FireWizardHurt, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
   dead: { src: FireWizardDeath, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
@@ -71,8 +90,49 @@ const FIRE_WIZARD = new PlayerAnimator({
   attacking1: { src: FireWizardAttack1, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
   attacking2: { src: FireWizardAttack2, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
   charge: { src: FireWizardCharge, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
-  fireball: { src: FireWizrdFireball, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
-  flameJet: { src: FireWizardFlameJet, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  ball: { src: FireWizardMagicBall, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  jet: { src: FireWizardMagicJet, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
 })
 
-export default { FIRE_WIZARD }
+const LIGHTNING_WIZARD = new PlayerAnimator({
+  idle: { src: LightningWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  walking: { src: LightningWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 } },
+  running: { src: LightningWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  
+  'start jumping': { src: LightningWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4 },
+  jumping: { src: LightningWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4 },
+  falling: { src: LightningWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5 },
+  landing: { src: LightningWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6 },
+
+  hurting: { src: LightningWizardHurt, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  dead: { src: LightningWizardDeath, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+
+  attacking1: { src: LightningWizardAttack1, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  attacking2: { src: LightningWizardAttack2, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  charge: { src: LightningWizardCharge, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  ball: { src: LightningWizardMagicBall, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  jet: { src: LightningWizardMagicJet, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+})
+
+const WANDARER_WIZARD = new PlayerAnimator({
+  idle: { src: WandarerWizardIdle, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  walking: { src: WandarerWizardWalk, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 40, y: 58 } },
+  running: { src: WandarerWizardRun, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  
+  'start jumping': { src: WandarerWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 4 },
+  jumping: { src: WandarerWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 4 },
+  falling: { src: WandarerWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 1, start: 5 },
+  landing: { src: WandarerWizardJump, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 20, y: 58 }, frames: 3, start: 6 },
+
+  hurting: { src: WandarerWizardHurt, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  dead: { src: WandarerWizardDeath, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+
+  attacking1: { src: WandarerWizardAttack1, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  attacking2: { src: WandarerWizardAttack2, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  charge1: { src: WandarerWizardCharge1, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  charge2: { src: WandarerWizardCharge2, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  ball: { src: WandarerWizardMagicBall, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+  jet: { src: WandarerWizardMagicJet, frameSize: 128, speed: ANIMATION_SPEED, offset: { x: 30, y: 58 } },
+})
+
+export default { FIRE_WIZARD, LIGHTNING_WIZARD, WANDARER_WIZARD }

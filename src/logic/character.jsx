@@ -28,11 +28,10 @@ export default class Character {
 
   stop () {
     this.speed.x = 0
-    console.log(this.facing)
   }
 
   jump() {
-    this.setTemporaryState('start jumping ' + this.facing).then(() => {
+    this.setTemporaryState('start jumping').then(() => {
       this.speed.y = -this.speedValue
     })
   }
@@ -46,7 +45,7 @@ export default class Character {
 
     if (map.isSolid(this.position.x, newPosition.y, this.size.width, this.size.height)) {
       this.speed.y = 0
-      this.setTemporaryState('landing ' + this.facing)
+      this.setTemporaryState('landing')
     } else if (map.isSolid(this.position.x, newPosition.y + 1, this.size.width, this.size.height)) {
       this.speed.y = 0
     } else {
@@ -58,18 +57,18 @@ export default class Character {
   state () {
     if (this._temporaryState) return this._temporaryState
     if (this.speed.y < -0.1) {
-      return 'jumping ' + this.facing
+      return 'jumping'
     } else if (this.speed.y > 0.1) {
-      return 'falling ' + this.facing
+      return 'falling'
     }
 
     if (Math.abs(this.speed.x) > RUNNING_SPEED) {
-      return 'running ' + this.facing
+      return 'running'
     } else if (Math.abs(this.speed.x) > 0) {
-      return 'walking ' + this.facing
+      return 'walking'
     }
 
-    return 'idle ' + this.facing
+    return 'idle'
   }
 
   setTemporaryState (state) {
