@@ -63,7 +63,7 @@ export const SyncedContextProvider = ({ children, knownTypes }) => {
   // Send game state updates
   const sendUpdate = (state) => {
     updateState(state)
-    if (conn) conn.send(state)
+    if (conn) setTimeout(() => conn.send(state), 0)
   }
 
   return (

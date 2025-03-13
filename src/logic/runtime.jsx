@@ -41,13 +41,13 @@ export default class Runtime extends EventListener {
 
   syncup () {
     this.update(this.game.toJSON())
-    console.log('syncup', this)
+    console.log('syncup')
   }
 
   syncdown (state) {
     this.state = deepmerge(this.state, state)
     this.game = Game.fromJSON(this.state)
-    console.log('syncdown', this)
+    console.log('syncdown')
   }
 }
 

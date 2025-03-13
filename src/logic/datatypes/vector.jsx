@@ -8,27 +8,19 @@ export default class Vector extends Serializable {
   }
 
   add(vector) {
-    this.x += vector.x
-    this.y += vector.y
-    return this
+    return new Vector(this.x + vector.x, this.y + vector.y)
   }
 
   subtract(vector) {
-    this.x -= vector.x
-    this.y -= vector.y
-    return this
+    return new Vector(this.x - vector.x, this.y - vector.y)
   }
 
   multiply(scalar) {
-    this.x *= scalar
-    this.y *= scalar
-    return this
+    return new Vector(this.x * scalar, this.y * scalar)
   }
 
   divide(scalar) {
-    this.x /= scalar
-    this.y /= scalar
-    return this
+    return new Vector(this.x / scalar, this.y / scalar)
   }
 
   length() {

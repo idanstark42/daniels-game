@@ -22,7 +22,7 @@ export default function Game () {
   useEffect(() => {
     if (peerId) {
       if (!runtime) {
-        setRuntime(new Runtime(peerId, state, sendUpdate, isHost))
+        setRuntime(new Runtime(peerId, state, sendUpdate, true))
       } else {
         runtime.syncdown(state)
       }
@@ -46,18 +46,17 @@ export default function Game () {
 
   useEffect(() => {
     if (!runtime || !runtime.currentPlayer) return
-    console.log('runtime', runtime)
 
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     const referencePoint = new Vector(canvas.width / 2, canvas.height * 0.8)
-    const referenceVector = runtime.currentPlayer.position.subtract(referencePoint)
     const tileSize = runtime.game.level.map.tileSize
 
     const render = () => {
       if (!runtime) return
       runtime.tick()
 
+      const referenceVector = runtime.currentPlayer.position.subtract(referencePoint)
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       drawBackground(ctx, canvas)
