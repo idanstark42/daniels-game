@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { Peer } from 'peerjs'
+
+import deepMerge from 'deepmerge'
 
 // Context Setup
 const WebSocketContext = createContext(null)
@@ -8,11 +10,12 @@ const WebSocketContext = createContext(null)
 export const useSyncedContext = () => useContext(WebSocketContext)
 
 // Provider Component
-export const SyncedContextProvider = ({ children }) => {
+export const SyncedContextProvider = ({ children, knownTypes }) => {
   const [peer, setPeer] = useState(null)
   const [conn, setConn] = useState(null)
   const [peerId, setPeerId] = useState(null)
-  const [gameState, setGameState] = useState({}) // Shared game state
+  const [state, updateState] = useState({}) // Shared game state
+  const [isHost, setIsHost] = useState(false)
 
   useEffect(() => {
     // Initialize PeerJS
@@ -28,18 +31,18 @@ export const SyncedContextProvider = ({ children }) => {
     newPeer.on('connection', (connection) => {
       console.log('Incoming connection:', connection)
       setupConnection(connection)
+      setIsHost(false)
     })
 
     return () => newPeer.destroy() // Cleanup on unmount
   }, [])
 
   const setupConnection = (connection) => {
-    console.log(connection)
     setConn(connection)
 
     connection.on('data', (data) => {
       console.log('Received:', data)
-      setGameState((prev) => ({ ...prev, ...data }))
+      updateState((prev) => deepMerge(prev, data))
     })
 
     connection.on('close', () => console.log('Connection closed'))
@@ -52,23 +55,24 @@ export const SyncedContextProvider = ({ children }) => {
       connection.on('open', () => {
         console.log('Connected to:', peerId)
         setupConnection(connection)
+        setIsHost(true)
       })
     }
   }
 
   // Send game state updates
-  const sendUpdate = (update) => {
-    setGameState((prev) => ({ ...prev, ...update }))
-    if (conn) conn.send(update)
+  const sendUpdate = (state) => {
+    updateState(state)
+    if (conn) conn.send(state)
   }
 
   return (
-    <WebSocketContext.Provider value={{ peerId, connectToPeer, gameState, sendUpdate, connected: Boolean(conn) }}>
+    <WebSocketContext.Provider value={{ peerId, connectToPeer, state, sendUpdate, connected: Boolean(conn), isHost }}>
       {children}
     </WebSocketContext.Provider>
   )
 }
 
 const generateShortId = () => {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();  // 6-character random ID
+  return Math.random().toString(36).substring(2, 8).toUpperCase() // 6-character random ID
 }

@@ -1,7 +1,10 @@
-export default class Map {
-  constructor(grid) {
+import Serializable from './serializable'
+
+export default class Map extends Serializable {
+  constructor(grid, tileSize = DEFAULT_TILE_SIZE) {
+    super(['grid', 'tileSize'])
     this.grid = grid
-    this.tileSize = DEFAULT_TILE_SIZE
+    this.tileSize = tileSize
   }
 
   isSolid(x, y, width, height) {
@@ -18,6 +21,10 @@ export default class Map {
       }
     }
     return false
+  }
+
+  static fromJSON(json) {
+    return new Map(json.grid, json.tileSize)
   }
 }
 

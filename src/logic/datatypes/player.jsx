@@ -1,8 +1,9 @@
 import FightingCharacter from './fighting-character'
 
 export default class Player extends FightingCharacter {
-  constructor(x, y, width, height, speedValue, maxHP, hp, armor, spellbook, maxMana, mana, manaRegenRate) {
-    super(x, y, width, height, speedValue, maxHP, hp, armor)
+  constructor(character, x, y, width, height, speedValue, hp, maxHP, armor, spellbook, maxMana, mana, manaRegenRate) {
+    super(x, y, width, height, speedValue, maxHP, hp, armor, ['character', 'spellbook', 'mana', 'manaRegenRate', 'maxMana'])
+    this.character = character
     this.spellbook = spellbook
     this.mana = mana
     this.manaRegenRate = manaRegenRate

@@ -8,11 +8,11 @@ import Game from './pages/game'
 function App() {
   const { connected } = useSyncedContext()
 
-  // if (connected) {
+  if (connected) {
     return <Game />
-  // } else {
-  //   return <Home />
-  // }
+  } else {
+    return <Home />
+  }
 }
 
 export default App

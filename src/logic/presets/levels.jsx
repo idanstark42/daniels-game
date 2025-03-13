@@ -1,6 +1,6 @@
-import Level from './level'
-import Map from './map'
-import Monster from './monster'
+import Level from '../datatypes/level'
+import Map from '../datatypes/map'
+import Monster from '../datatypes/monster'
 
 const LEVELS = [
   {
@@ -18,6 +18,6 @@ const LEVELS = [
     monsters: [],
     keypoints: []
   }
-].map(({ map, monsters, keypoints }) => new Level(new Map(map), monsters.map(monster => new Monster(...monster)), keypoints))
+].map(({ map, monsters, keypoints }, index) => new Level(index, new Map(map), monsters.map(monster => new Monster(...monster)), keypoints))
 
 export default LEVELS

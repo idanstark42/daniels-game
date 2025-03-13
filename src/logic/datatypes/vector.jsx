@@ -1,5 +1,8 @@
-export default class Vector {
+import Serializable from './serializable'
+
+export default class Vector extends Serializable {
   constructor(x, y) {
+    super(['x', 'y'])
     this.x = x
     this.y = y
   }
@@ -45,5 +48,9 @@ export default class Vector {
     this.y = y
   }
 
+  toString = () => `(${this.x}, ${this.y})`
+
   static copy = (vector) => new Vector(vector.x, vector.y)
+
+  static fromJSON = (json) => new Vector(json.x, json.y)
 }

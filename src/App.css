@@ -36,3 +36,24 @@ html, body, #root {
   align-items: center;
   width: 100%;
 }
+
+.character-selection {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  width: 100%;
+}
+
+.character-selection > * {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+
+  cursor: pointer;
+}

@@ -1,3 +1,4 @@
+import Serializable from './serializable'
 import Vector from './vector'
 
 const STATE_TIME = 100
@@ -6,8 +7,9 @@ const RUNNING_SPEED = 4
 const RIGHT = 'right'
 const LEFT = 'left'
 
-export default class Character {
-  constructor(x, y, width, height, speedValue) {
+export default class Character extends Serializable {
+  constructor(x, y, width, height, speedValue, additionalSavableProperties = []) {
+    super(['position', 'size', 'speed', 'speedValue', 'gravity', 'facing', ...additionalSavableProperties])
     this.position = new Vector(x, y)
     this.size = { width, height }
     this.speed = new Vector(0, 0)

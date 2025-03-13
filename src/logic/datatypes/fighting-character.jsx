@@ -1,8 +1,8 @@
 import Character from './character'
 
 export default class FightingCharacter extends Character {
-  constructor(x, y, width, height, speedValue, maxHP, hp, armor) {
-    super(x, y, width, height, speedValue)
+  constructor(x, y, width, height, speedValue, maxHP, hp, armor, additionalSavableProperties = []) {
+    super(x, y, width, height, speedValue, ['hp', 'maxHP', 'armor', ...additionalSavableProperties])
     this.hp = hp
     this.maxHP = maxHP
     this.armor = armor
