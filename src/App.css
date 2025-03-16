@@ -37,3 +37,24 @@ html, body, #root {
   align-items: center;
   width: 100%;
 }
+
+.parchment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 2em);
+  margin: 1em;
+  box-sizing: border-box;
+  padding: 4em;
+  box-shadow: 2px 3px 20px black, 0 0 60px #8a4d0f inset;
+  background: #fffef0;
+  color: black;
+
+  text-align: justify;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  direction: rtl;
+}
