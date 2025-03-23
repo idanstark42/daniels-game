@@ -144,7 +144,7 @@ export const roomEntranceKeyLevel = (background, key) => ({
   close: (state, _setState) => {
     window.removeEventListener('keypress', state.handleKeyDown)
   },
-  content: (state) => <div className='background' style={{ width: '100%', height: '80vh', position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+  content: (state) => <div className='background' style={{ height: '80vh', aspectRatio: 1, position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
     <div style={{ fontSize: '10rem', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.8)' }}>
       {key.split('').map((letter, i) => <span style={{ color: i < state.written ? 'inherit': 'white' }}>{letter}</span>)}
     </div>
@@ -154,7 +154,7 @@ export const roomEntranceKeyLevel = (background, key) => ({
 export const roomVirusesLevel = (background, viruses) => ({
     instructions: '',
     initialState: { viruses: new Array(viruses).fill(1).map(() => ({ x: 10 + 80*Math.random(), y: 10 + 80*Math.random(), size: 20 + 80*Math.random() })) },
-    content: (state, setState, nextLevel) => !Boolean(state.viruses) ? '' : <div style={{ width: '100%', height: '80vh', position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+    content: (state, setState, nextLevel) => !Boolean(state.viruses) ? '' : <div style={{ height: '80vh', aspectRatio: 1, position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
         {state.viruses.map((virus, i) => <img src={VIRUS} key={i} style={{ width: virus.size, height: virus.size, position: 'absolute', top: `${virus.y}%`, left: `${virus.x}%` }} onClick={() => {
             setState({ viruses: state.viruses.filter((_, j) => i !== j) })
             if (state.viruses.length === 1) nextLevel()
@@ -165,7 +165,7 @@ export const roomVirusesLevel = (background, viruses) => ({
 export const roomCodeLevel = (background, initialState, children) => ({
   instructions: '',
   initialState,
-  content: (state, setState, nextLevel) => <div style={{ width: '100%', height: '80vh', position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+  content: (state, setState, nextLevel) => <div style={{ height: '80vh', aspectRatio: 1, position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
     {children(state, setState, nextLevel)}
   </div>
 })
@@ -224,7 +224,7 @@ export const computerLevel = parts => {
 export const internetLevel = (background, allInternetImage, stuff, showAll, next) => ({
   instructions: '',
   initialState: { showingAllInternet: false, showingGoodstuff: false, stuffIndex: 0 },
-  content: (state, setState, nextLevel) => !state.hasOwnProperty('stuffIndex') ?  '' : <div className='background' style={{ width: '100%', height: '80vh', position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+  content: (state, setState, nextLevel) => <div className='background' style={{ height: '80vh', aspectRatio: 1, position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
     <button onClick={() => setState({ ...state, showingAllInternet: true })} style={{ position: 'absolute', top: '5%', left: '5%', width: '10rem', height: '2rem', backgroundColor: 'rgb(0, 0, 0, 0.8)', fontSize: '1.2rem', color: 'white' }}>
       כל האינטרנט
     </button>
@@ -275,7 +275,7 @@ export const internetLevel = (background, allInternetImage, stuff, showAll, next
         X
       </button>
     </div> : ''}
-    {state.showingGoodstuff ? <div style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%', backgroundColor: 'rgb(0, 0, 0, 0.8)', color: 'white' }}>
+    {state.hasOwnProperty('stuffIndex') && state.showingGoodstuff ? <div style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%', backgroundColor: 'rgb(0, 0, 0, 0.8)', color: 'white' }}>
       <img src={stuff[state.stuffIndex]} style={{ width: '100%', height: '100%' }} />
       <button onClick={() => setState({ ...state, showingGoodstuff: false })} style={{ position: 'absolute', top: 0, left: 0, width: '2rem', height: '2rem', backgroundColor: 'rgb(0, 0, 0, 0.8)', fontSize: '1.2rem', color: 'white' }}>
         X
@@ -293,7 +293,7 @@ export const dialogLevel = (background, dialog, allowExit) => ({
   content: (state, setState, nextLevel) => {
     if (!state.dialog) return ''
 
-    return <div className='background' style={{ width: '100%', height: '80vh', position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+    return <div className='background' style={{ height: '80vh', aspectRatio: 1, position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
     <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '1rem', boxSizing: 'border-box', textAlign: 'right', backgroundColor: 'rgb(0, 0, 0, 0.8)', color: 'white', display: 'flex', gap: 10, alignItems: 'right', justifyContent: 'center', flexDirection: 'column' }}>
       <div style={{ fontSize: '1.2rem', fontWeight: 'bold', fontStyle: 'italic' }}>{state.dialog.character}</div>
       {state.message ? <div style={{ fontSize: '1.2rem' }}>{state.message}</div> : <>
@@ -336,7 +336,7 @@ export const roomLookupLevel = (background, clickables) => ({
 export const roomHiddenCodeLevel = (background, code) => ({
   instructions: '',
   initialState: { input: '' },
-  content: (state, setState, nextLevel) => !state.hasOwnProperty('input') ? '' : <div className='background' style={{ width: '100%', height: '80vh', position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+  content: (state, setState, nextLevel) => !state.hasOwnProperty('input') ? '' : <div className='background' style={{ height: '80vh', aspectRatio: 1, position: 'relative', backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
     <div style={{ position: 'absolute', top: '5%', left: '5%', width: '90%', height: '90%', backgroundColor: 'rgb(0, 0, 0, 0.8)', color: 'white', display: 'flex', gap: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
       <input type='text' style={{ width: '10rem', height: '2rem', fontSize: '1.2rem' }} value={state.input} onChange={e => setState({ input: e.target.value })} />
       <button onClick={() => state.input === code ? nextLevel() : alert('נסי שוב')} style={{ background: 'rgb(228, 59, 161)', padding: '1rem', fontSize: '1.2rem' }}>אישור</button>
